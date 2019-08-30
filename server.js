@@ -72,9 +72,13 @@ mqttClient.on('message', function (topic, message) {
 // Establish the ECHONET Lite connection.
 var discoveryTime = process.env.DISCOVERY_TIME || 10;
 var pollFrequency = process.env.POLL_FREQUENCY || 30;
+var enlOptions = {'type': 'lan'}
+if(process.env.NETIF) {
+  enlOptions.netif=process.env.NETIF;
+}
 
 var EchonetLite = require('node-echonet-lite');
-var enlClient  = new EchonetLite({'type': 'lan'});
+var enlClient  = new EchonetLite(enlOptions);
 
 // Store discovered devices
 var devices = {}
@@ -224,7 +228,7 @@ function discoverDevices(devices) {
 async function subscribeDevice(deviceName, deviceAttributes) {
   console.log("Setting up MQTT subscriptions for: "+ deviceName)
 
-  var mqttPrefix = '/echonetlite/'+ deviceName +'/';
+  var mqttPrefix = 'echonetlite/'+ deviceName +'/';
   var mqttFullTopics = []
 
   mqttTopics.forEach(function(element) {
@@ -251,7 +255,7 @@ async function pollDevice(deviceName, deviceAttributes) {
   for (var index in mqttTopics) {
 
     var topic     = mqttTopics[index];
-    var fullTopic = '/echonetlite/'+ deviceName +'/'+ topic;
+    var fullTopic = 'echonetlite/'+ deviceName +'/'+ topic;
 
     if (topic.startsWith('hvac_state')) {
       var epc       = epcMapping[topic];
