@@ -7,7 +7,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "mqtt": "^2.18.1",
+    "mqtt": "^4.0.0",
     "node-echonet-lite": "^0.2.2",
     "watchpuppy": "0.0.1"
   }
